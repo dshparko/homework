@@ -1,3 +1,9 @@
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Getter
+@Setter
 public class Node<K, V> {
     private final int hash;
     private final K key;
@@ -9,19 +15,4 @@ public class Node<K, V> {
         this.value = value;
     }
 
-    public int getHash() {
-        return hash;
-    }
-
-    public K getKey() {
-        return key;
-    }
-
-    public V getValue() {
-        return value;
-    }
-
-    public void setValue(V value) {
-        this.value = value;
-    }
 }
