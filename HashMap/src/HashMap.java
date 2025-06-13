@@ -19,6 +19,9 @@ public class HashMap<K, V> {
         table = new LinkedList[capacity];
         this.capacity = capacity;
     }
+    private boolean isMatchingNode(Node<K,V> node, int hash, K key){
+       return node.getHash() == hash && (node.getKey() == key || (key != null && key.equals(node.getKey())));
+    }
 
     int getHash(Object key) {
         return key == null ? 0 : key.hashCode() ^ (key.hashCode() >>> 16);
@@ -37,7 +40,7 @@ public class HashMap<K, V> {
         }
 
         for (Node<K, V> node : table[index]) {
-            if (node.getHash() == hash && (node.getKey() == key || (key != null && key.equals(node.getKey())))) {
+            if (isMatchingNode(node, hash, key)) {
                 node.setValue(value);
                 return;
             }
@@ -45,7 +48,9 @@ public class HashMap<K, V> {
 
         table[index].add(new Node<>(hash, key, value));
         size++;
-        resize();
+        if((float) size / capacity >= DEFAULT_LOAD_FACTOR) {
+            resize();
+        }
     }
 
     public V get(K key) {
@@ -57,7 +62,7 @@ public class HashMap<K, V> {
         }
 
         for (Node<K, V> node : table[index]) {
-            if (node.getHash() == hash && (node.getKey() == key || (key != null && key.equals(node.getKey())))) {
+            if (node.getHash() == hash && (isMatchingNode(node, hash, key))) {
                 return node.getValue();
             }
         }
@@ -72,7 +77,7 @@ public class HashMap<K, V> {
             return;
         }
 
-        boolean removed = table[index].removeIf(node -> node.getHash() == hash && (node.getKey() == key || (key != null && key.equals(node.getKey()))));
+        boolean removed = table[index].removeIf(node -> isMatchingNode(node, hash, key));
 
         if (removed) {
             size--;
@@ -81,8 +86,6 @@ public class HashMap<K, V> {
 
     @SuppressWarnings("unchecked")
     private void resize() {
-        if ((float) size / capacity >= DEFAULT_LOAD_FACTOR) {
-
             int oldCapacity = capacity;
             capacity = capacity * 2;
             LinkedList<Node<K, V>>[] oldTable = table;
@@ -97,7 +100,6 @@ public class HashMap<K, V> {
                     }
                 }
             }
-        }
     }
 
 }
