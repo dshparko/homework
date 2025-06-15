@@ -1,7 +1,9 @@
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+@Slf4j
 public class HibernateUtil {
     @Getter
     private static final SessionFactory sessionFactory = buildSessionFactory();
@@ -13,7 +15,7 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(User.class);
             return configuration.buildSessionFactory();
         } catch (Throwable ex) {
-            System.err.println("Failed to create SessionFactory. " + ex);
+            log.error("Failed to create SessionFactory. " + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }

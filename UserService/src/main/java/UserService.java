@@ -40,7 +40,7 @@ public class UserService {
     public void deleteUser(long id) {
         User user = userDao.read(id);
         userDao.delete(id);
-        log.info("User with information " + user + " was deleted.");
+        log.info("User was deleted.");
     }
 
     public void showAllUsers() {

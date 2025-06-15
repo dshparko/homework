@@ -1,10 +1,11 @@
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
-
+@Slf4j
 public class UserDAOImpl implements UserDAO {
 
     private void executeInsideTransaction(Consumer<Session> action) {
@@ -17,7 +18,7 @@ public class UserDAOImpl implements UserDAO {
             if (transaction != null) {
                 transaction.rollback();
             }
-            System.err.println("Transaction was failed: " + e.getMessage());
+            log.error("Transaction was failed: " + e.getMessage());
         }
     }
 
@@ -25,7 +26,7 @@ public class UserDAOImpl implements UserDAO {
     public void create(User user) {
         executeInsideTransaction(session -> {
             session.persist(user);
-            System.out.println("User was created: " + user);
+            log.info("User was created: " + user);
         });
     }
 
@@ -34,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.find(User.class, id);
         } catch (Exception e) {
-            System.err.println("Error reading user: " + e.getMessage());
+            log.error("Error reading user: " + e.getMessage());
             return null;
         }
     }
@@ -43,7 +44,7 @@ public class UserDAOImpl implements UserDAO {
     public void update(User user) {
         executeInsideTransaction(session -> {
             session.merge(user);
-            System.out.println("User was updated: " + user);
+            log.info("User was updated: " + user);
         });
     }
 
@@ -53,9 +54,9 @@ public class UserDAOImpl implements UserDAO {
             User user = session.find(User.class, id);
             if (user != null) {
                 session.remove(user);
-                System.out.println("User was deleted: " + user);
+                log.info("User was deleted: " + user);
             } else {
-                System.out.println("User wasn't found: id=" + id);
+                log.warn("User wasn't found: id=" + id);
             }
         });
     }
@@ -65,7 +66,7 @@ public class UserDAOImpl implements UserDAO {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM User", User.class).list();
         } catch (Exception e) {
-            System.err.println("Error retrieving users: " + e.getMessage());
+            log.error("Error retrieving users: " + e.getMessage());
             return Collections.emptyList();
         }
     }
