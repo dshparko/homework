@@ -1,5 +1,7 @@
-import java.util.Scanner;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.Scanner;
+@Slf4j
 public class ConsoleUI {
     private final Scanner scanner = new Scanner(System.in);
     private final UserService userService;
@@ -19,19 +21,19 @@ public class ConsoleUI {
                 case 4 -> deleteUser();
                 case 5 -> showAllUsers();
                 case 0 -> exit();
-                default -> System.out.println("Invalid choice.");
+                default -> log.warn("Invalid choice.");
             }
         }
     }
 
     private void printMenu() {
-        System.out.println("\nChoose option:");
-        System.out.println("1. Create user");
-        System.out.println("2. Get user by ID");
-        System.out.println("3. Update user");
-        System.out.println("4. Delete user");
-        System.out.println("5. Show all users");
-        System.out.println("0. Exit");
+        log.info("\nChoose option:");
+        log.info("1. Create user");
+        log.info("2. Get user by ID");
+        log.info("3. Update user");
+        log.info("4. Delete user");
+        log.info("5. Show all users");
+        log.info("0. Exit");
     }
 
     private void createUser() {
@@ -64,12 +66,12 @@ public class ConsoleUI {
     }
 
     private void exit() {
-        System.out.println("Exit.");
+        log.info("Exit.");
         System.exit(0);
     }
 
     private String readLine(String prompt) {
-        System.out.print(prompt);
+        log.info(prompt);
         return scanner.nextLine();
     }
 
@@ -78,7 +80,7 @@ public class ConsoleUI {
             try {
                 return Integer.parseInt(readLine(prompt));
             } catch (NumberFormatException e) {
-                System.out.println("Invalid number. Try again.");
+                log.warn("Invalid number. Try again.");
             }
         }
     }
@@ -88,7 +90,7 @@ public class ConsoleUI {
             try {
                 return Long.parseLong(readLine(prompt));
             } catch (NumberFormatException e) {
-                System.out.println("Invalid number. Try again.");
+                log.warn("Invalid number. Try again.");
             }
         }
     }

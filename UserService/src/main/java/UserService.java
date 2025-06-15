@@ -1,5 +1,7 @@
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+@Slf4j
 public class UserService {
     private final UserDAO userDao;
 
@@ -10,15 +12,15 @@ public class UserService {
     public void createUser(String name, String email, int age) {
         User user = new User(name, email, age);
         userDao.create(user);
-        System.out.println("User was created: " + user);
+        log.info("User was created: " + user);
     }
 
     public void getUser(long id) {
         User user = userDao.read(id);
         if (user != null) {
-            System.out.println("User: " + user);
+            log.info("User: " + user);
         } else {
-            System.out.println("User wasn't found.");
+            log.warn("User wasn't found.");
         }
     }
 
@@ -29,24 +31,24 @@ public class UserService {
             user.setEmail(email);
             user.setAge(age);
             userDao.update(user);
-            System.out.println("User was updated.");
+            log.info("User was updated.");
         } else {
-            System.out.println("User wasn't found.");
+            log.warn("User wasn't found.");
         }
     }
 
     public void deleteUser(long id) {
         User user = userDao.read(id);
         userDao.delete(id);
-        System.out.println("User with information " + user + " was deleted.");
+        log.info("User with information " + user + " was deleted.");
     }
 
     public void showAllUsers() {
         List<User> users = userDao.findAll();
         if (users.isEmpty()) {
-            System.out.println("No users found.");
+            log.info("No users found.");
         } else {
-            users.forEach(System.out::println);
+            users.forEach(user -> log.info(user.toString()));
         }
     }
 }
