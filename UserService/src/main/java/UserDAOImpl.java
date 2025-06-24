@@ -2,7 +2,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 @Slf4j
@@ -19,6 +18,7 @@ public class UserDAOImpl implements UserDAO {
                 transaction.rollback();
             }
             log.error("Transaction was failed: " + e.getMessage());
+            throw e;
         }
     }
 
@@ -36,7 +36,7 @@ public class UserDAOImpl implements UserDAO {
             return session.find(User.class, id);
         } catch (Exception e) {
             log.error("Error reading user: " + e.getMessage());
-            return null;
+            throw e;
         }
     }
 
@@ -67,7 +67,7 @@ public class UserDAOImpl implements UserDAO {
             return session.createQuery("FROM User", User.class).list();
         } catch (Exception e) {
             log.error("Error retrieving users: " + e.getMessage());
-            return Collections.emptyList();
+            throw e;
         }
     }
 }
