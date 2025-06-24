@@ -1,6 +1,7 @@
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Scanner;
+
 @Slf4j
 public class ConsoleUI {
     private final Scanner scanner = new Scanner(System.in);
@@ -37,32 +38,52 @@ public class ConsoleUI {
     }
 
     private void createUser() {
-        String name = readLine("Enter name: ");
-        String email = readLine("Enter email: ");
-        int age = readInt("Enter age: ");
-        userService.createUser(name, email, age);
+        try {
+            String name = readLine("Enter name: ");
+            String email = readLine("Enter email: ");
+            int age = readInt("Enter age: ");
+            userService.createUser(name, email, age);
+        } catch (Exception e) {
+            log.error("Failed to create user", e);
+        }
     }
 
     private void getUserById() {
-        long id = readLong("Enter user ID: ");
-        userService.getUser(id);
+        try {
+            long id = readLong("Enter user ID: ");
+            userService.getUser(id);
+        } catch (Exception e) {
+            log.error("Failed to retrieve user", e);
+        }
     }
 
     private void updateUser() {
-        long id = readLong("Enter user ID to update: ");
-        String name = readLine("New name: ");
-        String email = readLine("New email: ");
-        int age = readInt("New age: ");
-        userService.updateUser(id, name, email, age);
+        try {
+            long id = readLong("Enter user ID to update: ");
+            String name = readLine("New name: ");
+            String email = readLine("New email: ");
+            int age = readInt("New age: ");
+            userService.updateUser(id, name, email, age);
+        } catch (Exception e) {
+            log.error("Failed to update user", e);
+        }
     }
 
     private void deleteUser() {
-        long id = readLong("Enter user ID to delete: ");
-        userService.deleteUser(id);
+        try {
+            long id = readLong("Enter user ID to delete: ");
+            userService.deleteUser(id);
+        } catch (Exception e) {
+            log.error("Failed to delete user", e);
+        }
     }
 
     private void showAllUsers() {
-        userService.showAllUsers();
+        try {
+            userService.showAllUsers();
+        } catch (Exception e) {
+            log.error("Failed to display users", e);
+        }
     }
 
     private void exit() {

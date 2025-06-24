@@ -1,9 +1,11 @@
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 @Slf4j
+@UtilityClass
 public class HibernateUtil {
     @Getter
     private static final SessionFactory sessionFactory = buildSessionFactory();
