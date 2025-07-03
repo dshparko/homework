@@ -70,6 +70,8 @@ public class ConsoleUI {
     private void updateUser() {
         try {
             Long id = readLong("Enter user ID to update: ");
+            userService.getUser(id);
+
             String name = readLine("New name: ");
             String email = readLine("New email: ");
             int age = readInt("New age: ");
