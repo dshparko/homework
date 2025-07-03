@@ -12,7 +12,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-@Data
 public class UserController {
     private final UserService service;
 
@@ -22,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDto byId(@PathVariable Long id) {
+    public UserDto byId(@PathVariable("id") Long id) {
         return service.getUser(id);
     }
 
@@ -32,13 +31,15 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDto update(@PathVariable Long id, @RequestBody @Valid UserDto dto) {
+    public UserDto update(@PathVariable("id") Long id, @RequestBody @Valid UserDto dto) {
         return service.updateUser(id, dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         service.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 }
+
+
