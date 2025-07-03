@@ -1,6 +1,7 @@
 package dshparko;
 
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -19,7 +20,7 @@ public class UserService {
     }
 
     public UserDto getUser(Long id) {
-        return repository.findById(id).map(mapper::toDto).orElseThrow();
+        return repository.findById(id).map(mapper::toDto).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     public UserDto createUser(UserDto dto) {
@@ -28,7 +29,8 @@ public class UserService {
     }
 
     public UserDto updateUser(Long id, UserDto dto) {
-        User user = repository.findById(id).orElseThrow();
+        User user = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
         user.setName(dto.name());
         user.setEmail(dto.email());
         user.setAge(dto.age());
@@ -36,6 +38,9 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
+        if (!repository.existsById(id)) {
+            throw new UserNotFoundException(id);
+        }
         repository.deleteById(id);
     }
 }
