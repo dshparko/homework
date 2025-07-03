@@ -1,9 +1,11 @@
 package dshparko;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -16,7 +18,12 @@ public class UserService {
     }
 
     public List<UserDto> findAllUsers() {
-        return repository.findAll().stream().map(mapper::toDto).toList();
+        try {
+            return repository.findAll().stream().map(mapper::toDto).toList();
+        } catch (Exception e) {
+            log.error("Error retrieving users: " + e.getMessage());
+            throw new RuntimeException("Error retrieving users: ", e);
+        }
     }
 
     public UserDto getUser(Long id) {
@@ -24,8 +31,13 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto dto) {
-        User user = repository.save(mapper.toEntity(dto));
-        return mapper.toDto(user);
+        try {
+            User user = repository.save(mapper.toEntity(dto));
+            return mapper.toDto(user);
+        } catch (Exception e) {
+            log.error("Error occurred while creating user: " + e.getMessage());
+            throw new RuntimeException("Error occurred while creating user", e);
+        }
     }
 
     public UserDto updateUser(Long id, UserDto dto) {
