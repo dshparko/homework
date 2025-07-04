@@ -2,11 +2,13 @@ package dshparko;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository repository;
@@ -30,6 +32,7 @@ public class UserService {
         return repository.findById(id).map(mapper::toDto).orElseThrow(() -> new UserNotFoundException(id));
     }
 
+    @Transactional
     public UserDto createUser(UserDto dto) {
         try {
             User user = repository.save(mapper.toEntity(dto));
@@ -40,6 +43,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public UserDto updateUser(Long id, UserDto dto) {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
@@ -49,6 +53,7 @@ public class UserService {
         return mapper.toDto(repository.save(user));
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         if (!repository.existsById(id)) {
             throw new UserNotFoundException(id);
