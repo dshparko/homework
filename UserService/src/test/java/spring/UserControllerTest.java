@@ -120,7 +120,7 @@ class UserControllerTest {
     @Test
     @DisplayName("400 Invalid Request Body")
     void shouldReturn400WhenJsonIsInvalid() throws Exception {
-        String invalidJson = "{\"id\": null, \"name\": \"Test\", \"email\": , }"; // плохой JSON
+        String invalidJson = "{\"id\": null, \"name\": \"Test\", \"email\": , }";
 
         mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
