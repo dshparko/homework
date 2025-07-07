@@ -20,12 +20,9 @@ public class UserService {
     }
 
     public List<UserDto> findAllUsers() {
-        try {
-            return repository.findAll().stream().map(mapper::toDto).toList();
-        } catch (Exception e) {
-            log.error("Error retrieving users: " + e.getMessage());
-            throw new RuntimeException("Error retrieving users: ", e);
-        }
+
+        return repository.findAll().stream().map(mapper::toDto).toList();
+
     }
 
     public UserDto getUser(Long id) {
@@ -34,13 +31,9 @@ public class UserService {
 
     @Transactional
     public UserDto createUser(UserDto dto) {
-        try {
-            User user = repository.save(mapper.toEntity(dto));
-            return mapper.toDto(user);
-        } catch (Exception e) {
-            log.error("Error occurred while creating user: " + e.getMessage());
-            throw new RuntimeException("Error occurred while creating user", e);
-        }
+        User user = repository.save(mapper.toEntity(dto));
+        return mapper.toDto(user);
+
     }
 
     @Transactional
