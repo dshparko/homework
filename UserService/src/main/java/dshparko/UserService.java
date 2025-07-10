@@ -1,23 +1,24 @@
 package dshparko;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository repository;
     private final UserMapper mapper;
+    private final NotificationProducer notificationProducer;
 
-    public UserService(UserRepository repository, UserMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     public List<UserDto> findAllUsers() {
 
@@ -30,27 +31,38 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto createUser(UserDto dto) {
+    public UserDto createUser(UserDto dto) throws JsonProcessingException {
         User user = repository.save(mapper.toEntity(dto));
-        return mapper.toDto(user);
 
+        notificationProducer.sendUserEvent("CREATE", user.getEmail());
+
+        return mapper.toDto(user);
     }
 
     @Transactional
-    public UserDto updateUser(Long id, UserDto dto) {
+    public UserDto updateUser(Long id, UserDto dto) throws JsonProcessingException {
         User user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+
         user.setName(dto.name());
         user.setEmail(dto.email());
         user.setAge(dto.age());
+
+        notificationProducer.sendUserEvent("UPDATE", user.getEmail());
         return mapper.toDto(repository.save(user));
     }
 
     @Transactional
-    public void deleteUser(Long id) {
-        if (!repository.existsById(id)) {
+    public void deleteUser(Long id) throws JsonProcessingException {
+        Optional<User> optionalUser = repository.findById(id);
+
+        if (optionalUser.isEmpty()) {
             throw new UserNotFoundException(id);
         }
+
+        User user = optionalUser.get();
         repository.deleteById(id);
+
+        notificationProducer.sendUserEvent("DELETE", user.getEmail());
     }
 }
