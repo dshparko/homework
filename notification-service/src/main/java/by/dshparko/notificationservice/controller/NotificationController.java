@@ -1,5 +1,8 @@
-package by.dshparko.notificationservice;
+package by.dshparko.notificationservice.controller;
 
+import by.dshparko.notificationservice.model.UserEvent;
+import by.dshparko.notificationservice.service.EmailService;
+import by.dshparko.notificationservice.util.NotificationMessageBuilder;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +21,7 @@ public class NotificationController {
 
     @PostMapping
     public ResponseEntity<Void> notifyUser(@RequestBody UserEvent event) throws MessagingException {
-        emailService.send(event.getEmail(),
-                "Notification",
-                messageBuilder.build(event.getType()));
+        emailService.send(event);
         return ResponseEntity.ok().build();
     }
 }

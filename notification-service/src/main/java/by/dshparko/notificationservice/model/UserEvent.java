@@ -1,4 +1,4 @@
-package by.dshparko.notificationservice;
+package by.dshparko.notificationservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

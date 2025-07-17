@@ -1,5 +1,6 @@
 package by.dshparko.notificationservice;
 
+import by.dshparko.notificationservice.model.UserEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,8 @@ class NotificationControllerTest {
     private JavaMailSender javaMailSender;
 
     void performNotificationTest(String operationType, String email) throws Exception {
-        var event = new UserEvent(operationType, email);
+        var event = new
+                UserEvent(operationType, email);
         var json = objectMapper.writeValueAsString(event);
 
         MimeMessage mimeMessage = mock(MimeMessage.class);
