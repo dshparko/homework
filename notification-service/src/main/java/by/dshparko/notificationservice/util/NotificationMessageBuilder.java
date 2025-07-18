@@ -1,4 +1,4 @@
-package by.dshparko.notificationservice;
+package by.dshparko.notificationservice.util;
 
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ public class NotificationMessageBuilder {
             case "CREATE" -> "Hello! Your account was successfully created.";
             case "UPDATE" -> "Hello! Your account was successfully updated.";
             case "DELETE" -> "Hello! Your account was successfully deleted.";
-            default       -> "Incorrect parameters";
+            default -> "Incorrect parameters";
         };
     }
 }

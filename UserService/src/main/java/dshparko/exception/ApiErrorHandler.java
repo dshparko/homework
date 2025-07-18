@@ -1,4 +1,4 @@
-package dshparko;
+package dshparko.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;

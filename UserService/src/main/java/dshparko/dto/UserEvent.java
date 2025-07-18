@@ -1,4 +1,4 @@
-package dshparko;
+package dshparko.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

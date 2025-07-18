@@ -1,5 +1,7 @@
-package dshparko;
+package dshparko.mapper;
 
+import dshparko.dto.UserDto;
+import dshparko.model.User;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
