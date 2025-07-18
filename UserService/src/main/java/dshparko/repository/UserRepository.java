@@ -1,8 +1,7 @@
 package dshparko.repository;
 
-import dshparko.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<dshparko.model.User, Long> {
 
 }
