@@ -5,15 +5,17 @@ spring:
     name: gateway-service
   cloud:
     gateway:
-      routes:
-        - id: user-service
-          uri: lb://user-service
-          predicates:
-            - Path=/users/**
-        - id: service-notification
-          uri: lb://notification-service
-          predicates:
-            - Path=/notifications/**
+      server:
+        webflux:
+          routes:
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/users/**
+            - id: service-notification
+              uri: lb://notification-service
+              predicates:
+                - Path=/notifications/**
 eureka:
   client:
     service-url:
