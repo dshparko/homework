@@ -1,9 +1,12 @@
+package dshparko;
+
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 import java.util.function.Consumer;
+@Deprecated
 @Slf4j
 public class UserDAOImpl implements UserDAO {
 

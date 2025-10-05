@@ -1,16 +1,22 @@
+package dshparko;
+
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
+@Deprecated
+@RequiredArgsConstructor
 @Slf4j
 public class ConsoleUI {
-    private final Scanner scanner = new Scanner(System.in);
     private final UserService userService;
 
-    public ConsoleUI(UserService userService) {
-        this.userService = userService;
-    }
+    private final Scanner scanner = new Scanner(System.in);
 
+    @PostConstruct
     public void start() {
         while (true) {
             printMenu();
@@ -42,7 +48,9 @@ public class ConsoleUI {
             String name = readLine("Enter name: ");
             String email = readLine("Enter email: ");
             int age = readInt("Enter age: ");
-            userService.createUser(name, email, age);
+            UserDto dto = new UserDto(null, name, email, age, LocalDate.now());
+            userService.createUser(dto);
+            log.info("User is created: " + dto);
         } catch (Exception e) {
             log.error("Failed to create user", e);
         }
@@ -51,7 +59,8 @@ public class ConsoleUI {
     private void getUserById() {
         try {
             long id = readLong("Enter user ID: ");
-            userService.getUser(id);
+            var user = userService.getUser(id);
+            log.info("User: " + user);
         } catch (Exception e) {
             log.error("Failed to retrieve user", e);
         }
@@ -59,11 +68,16 @@ public class ConsoleUI {
 
     private void updateUser() {
         try {
-            long id = readLong("Enter user ID to update: ");
+            Long id = readLong("Enter user ID to update: ");
+            userService.getUser(id);
+
             String name = readLine("New name: ");
             String email = readLine("New email: ");
             int age = readInt("New age: ");
-            userService.updateUser(id, name, email, age);
+            UserDto user = userService.getUser(id);
+            UserDto dto = new UserDto(id, name, email, age, user.createdAt());
+            UserDto updated = userService.updateUser(id, dto);
+            log.info("User was updated " + updated);
         } catch (Exception e) {
             log.error("Failed to update user", e);
         }
@@ -73,6 +87,7 @@ public class ConsoleUI {
         try {
             long id = readLong("Enter user ID to delete: ");
             userService.deleteUser(id);
+            log.info("User with id {} was deleted ", id);
         } catch (Exception e) {
             log.error("Failed to delete user", e);
         }
@@ -80,7 +95,9 @@ public class ConsoleUI {
 
     private void showAllUsers() {
         try {
-            userService.showAllUsers();
+            List<UserDto> users = userService.findAllUsers();
+            log.info("Users: ");
+            users.forEach(user -> log.info(user.toString()));
         } catch (Exception e) {
             log.error("Failed to display users", e);
         }
