@@ -1,4 +1,4 @@
-package dshparko;
+package dshparko.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;

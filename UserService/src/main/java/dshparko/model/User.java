@@ -1,4 +1,4 @@
-package dshparko;
+package dshparko.model;
 
 import jakarta.persistence.*;
 import lombok.*;

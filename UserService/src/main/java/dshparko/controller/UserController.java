@@ -1,7 +1,9 @@
-package dshparko;
+package dshparko.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import dshparko.dto.UserDto;
+import dshparko.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-@Import(ApiErrorHandler.class)
 public class UserController {
     private final UserService service;
 
@@ -27,17 +28,17 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> create(@RequestBody @Validated UserDto dto) {
+    public ResponseEntity<UserDto> create(@RequestBody @Validated UserDto dto) throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createUser(dto));
     }
 
     @PutMapping("/{id}")
-    public UserDto update(@PathVariable("id") Long id, @RequestBody @Validated UserDto dto) {
+    public UserDto update(@PathVariable("id") Long id, @RequestBody @Validated UserDto dto) throws JsonProcessingException {
         return service.updateUser(id, dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) throws JsonProcessingException {
         service.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
