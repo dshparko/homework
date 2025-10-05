@@ -1,10 +1,5 @@
 package spring;
 
-import dshparko.*;
-import dshparko.controller.UserController;
-import dshparko.dto.UserDto;
-import dshparko.exception.UserNotFoundException;
-import dshparko.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -16,6 +11,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dshparko.App;
+import dshparko.controller.UserController;
+import dshparko.dto.UserDto;
+import dshparko.exception.UserNotFoundException;
+import dshparko.service.UserService;
 import java.time.LocalDate;
 import java.util.List;
 
