@@ -21,7 +21,7 @@
     </appender>
 
     <!-- Корневой логгер -->
-    <root level="TRACE">
+    <root level="DEBAG">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </root>
